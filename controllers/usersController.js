@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const User = require('../models/usersModel');
 
@@ -23,6 +24,41 @@ const createUser = async (req, res) => {
   }
 }
 
+const signIn = async (req, res) => {
+  let { authorization } = req.headers;
+  const base64str = authorization.split(' ')[1];
+  const decoded = Buffer.from(base64str, 'base64').toString('ascii');
+  const [username, password] = decoded.split(':');
+  let user = await User.findOne({username});
+  try {
+    if (user === null) {
+      res.status(404).send(`${username} not found`);
+    }
+    const pendingToMatch = await bcrypt.compare(password, user.password)
+    console.log(pendingToMatch, 'match');
+    if (pendingToMatch) {
+      let userToken = jwt.sign(
+        { username: user.username },
+        process.env.SECRET,
+        { expiresIn: '1h' }
+      );
+      res.status(201).send(JSON.stringify('sended user word pairs'));
+      return;
+    } else {
+      console.log('its here');
+      res.status(400).send( {message: 'Wrong credentials'} );
+      throw new Error();
+    }
+  } catch (e) {
+    res.status(401).send( {
+      message: 'Wrongcredentials',
+      error: e
+    })
+    return;
+  }
+}
+
 module.exports = {
-  createUser
+  createUser,
+  signIn
 }
