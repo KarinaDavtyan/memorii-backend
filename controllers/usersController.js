@@ -5,7 +5,6 @@ const User = require('../models/usersModel');
 
 const createUser = async (req, res) => {
   let { username, password } = req.body;
-  console.log(username, password);
   let user = await User.findOne({
     username
   })
@@ -32,10 +31,9 @@ const signIn = async (req, res) => {
   let user = await User.findOne({username});
   try {
     if (user === null) {
-      res.status(404).send(`${username} not found`);
+      res.status(404).send(JSON.stringify(`${username} not found`));
     }
     const pendingToMatch = await bcrypt.compare(password, user.password)
-    console.log(pendingToMatch, 'match');
     if (pendingToMatch) {
       let userToken = jwt.sign(
         { username: user.username },
@@ -45,15 +43,14 @@ const signIn = async (req, res) => {
       res.status(201).send(JSON.stringify('sended user word pairs'));
       return;
     } else {
-      console.log('its here');
-      res.status(400).send( {message: 'Wrong credentials'} );
+      res.status(400).send(JSON.stringify({message: 'Wrong credentials'}));
       throw new Error();
     }
   } catch (e) {
-    res.status(401).send( {
+    res.status(401).send(JSON.stringify({
       message: 'Wrongcredentials',
       error: e
-    })
+    }));
     return;
   }
 }
