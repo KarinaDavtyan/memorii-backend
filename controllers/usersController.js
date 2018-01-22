@@ -40,7 +40,7 @@ const signIn = async (req, res) => {
         process.env.SECRET,
         { expiresIn: '1h' }
       );
-      res.status(201).send(JSON.stringify('sended user word pairs'));
+      res.status(201).send({token: userToken, username});
       return;
     } else {
       res.status(400).send(JSON.stringify({message: 'Wrong credentials'}));
