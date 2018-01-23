@@ -55,7 +55,20 @@ const signIn = async (req, res) => {
   }
 }
 
+const getUser = async (req, res) => {
+  let  { username } = req.body;
+  let user = await User.findOne({username});
+  if (user) {
+    res.status(201).send({username});
+  } else {
+    res.status(401).send(JSON.stringify({
+      message: 'Wrongcredentials'
+    }));
+  }
+}
+
 module.exports = {
   createUser,
-  signIn
+  signIn,
+  getUser
 }

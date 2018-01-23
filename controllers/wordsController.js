@@ -2,7 +2,8 @@ const Words = require('../models/wordsModel');
 const User = require('../models/usersModel');
 
 const getAllWords = async (req, res) => {
-  res.send('getAll')
+  let words = await Words.find();
+  res.status(201).send(words);
 }
 
 const postWords = async (req, res) => {
@@ -24,8 +25,13 @@ const getThePair = async (req, res) => {
   res.send('get the pair')
 }
 
+const getWordsByUser = async (req, res) => {
+
+}
+
 module.exports = {
   getAllWords,
   postWords,
-  getThePair
+  getThePair,
+  getWordsByUser
 }
