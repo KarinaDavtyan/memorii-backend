@@ -26,7 +26,27 @@ const getThePair = async (req, res) => {
 }
 
 const getWordsByUser = async (req, res) => {
-
+  let { username } = req.body;
+  let user = await User.findOne({username});
+  let words = await Words.aggregate([
+    {
+      $match: {
+        username: user._id
+      }
+    },
+    {
+      $sample: {
+        size: 5
+      }
+    }
+  ])
+  let test = words.map((word) => {
+    return {
+      [word.firstWord]: word.secondWord
+    }
+  }
+);
+  res.send(test);
 }
 
 module.exports = {
