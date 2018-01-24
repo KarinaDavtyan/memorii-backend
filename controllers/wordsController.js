@@ -25,7 +25,7 @@ const getThePair = async (req, res) => {
   res.send('get the pair')
 }
 
-const getWordsByUser = async (req, res) => {
+const getWordsByUserBot = async (req, res) => {
   let { username } = req.body;
   let user = await User.findOne({username});
   let words = await Words.aggregate([
@@ -40,18 +40,17 @@ const getWordsByUser = async (req, res) => {
       }
     }
   ])
-  let test = words.map((word) => {
+  let twoWords = words.map((word) => {
     return {
       [word.firstWord]: word.secondWord
     }
-  }
-);
-  res.send(test);
+  });
+  res.send(twoWords);
 }
 
 module.exports = {
   getAllWords,
   postWords,
   getThePair,
-  getWordsByUser
+  getWordsByUserBot
 }

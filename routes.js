@@ -12,7 +12,7 @@ router.get('/get-user', usersController.getUser);
 router.post('/pair', wordsController.postWords);
 router.get('/words', wordsController.getThePair);
 router.get('/everything', wordsController.getAllWords);
-router.get('/words-user', wordsController.getWordsByUser);
+router.get('/words-user', wordsController.getWordsByUserBot);
 
 
 module.exports = router;
