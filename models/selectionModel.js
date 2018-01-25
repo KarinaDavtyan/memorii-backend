@@ -2,9 +2,8 @@ const mongoose = require('mongoose');
 
 const selectionSchema = mongoose.Schema({
   title: String,
-  selection: { type: mongoose.Schema.Types.ObjectId, ref: 'Selection' },
-  username: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  date: Date.now()
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  date: { type: Date, default: Date.now() }
 })
 
 const Selection = mongoose.model('Selection', selectionSchema);
