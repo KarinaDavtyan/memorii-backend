@@ -5,9 +5,9 @@ const usersController = require('./controllers/usersController');
 const wordsController = require('./controllers/wordsController');
 
 
-router.post('/new_user', usersController.createUser);
+router.post('/user', usersController.postUser);
 router.get('/sign-in', usersController.signIn);
-router.get('/get-user', usersController.getUser);
+router.delete('/user', usersController.deleteUser);
 
 router.post('/pair', wordsController.postWords);
 router.get('/words', wordsController.getThePair);

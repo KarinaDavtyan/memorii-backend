@@ -3,22 +3,27 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../models/usersModel');
 
-const createUser = async (req, res) => {
-  let { username, password } = req.body;
+const postUser = async (req, res) => {
+  let { username,
+    password,
+    points,
+    avatar } = req.body;
   let user = await User.findOne({
     username
   })
   if (user) {
-    res.status(400).send({error: 'Username already exists'});
+    res.status(400).send({error: `${username} username has been taken already`});
   } else {
     const saltRounds = 10;
     let hashedPassword = await bcrypt.hash(password, saltRounds);
     const user = new User({
       username,
-      password: hashedPassword
+      password: hashedPassword,
+      points,
+      avatar
     })
-    console.log(`saving ${username} to the system`);
     let newUser = await user.save();
+    console.log(`${username} saved to db`);
     res.status(201).send(user);
   }
 }
@@ -40,7 +45,13 @@ const signIn = async (req, res) => {
         process.env.SECRET,
         { expiresIn: '1h' }
       );
-      res.status(201).send({token: userToken, username});
+      let  { avatar, points } = user
+      res.status(200).send({token: userToken, user:{
+        username,
+        points,
+        avatar
+      }
+      });
       return;
     } else {
       res.status(400).send(JSON.stringify({message: 'Wrong credentials'}));
@@ -55,20 +66,14 @@ const signIn = async (req, res) => {
   }
 }
 
-const getUser = async (req, res) => {
-  let  { username } = req.body;
-  let user = await User.findOne({username});
-  if (user) {
-    res.status(201).send({username});
-  } else {
-    res.status(401).send(JSON.stringify({
-      message: 'Wrongcredentials'
-    }));
-  }
+const deleteUser = async (req, res) => {
+  let { username } = req.body;
+  let user = await User.findOneAndRemove({ username });
+  res.status(200).send(`${username} succesfully deleted from db`);
 }
 
 module.exports = {
-  createUser,
+  postUser,
   signIn,
-  getUser
+  deleteUser
 }
