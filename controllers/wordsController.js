@@ -1,42 +1,40 @@
 const Words = require('../models/wordsModel');
 const User = require('../models/usersModel');
-
-const getAllWords = async (req, res) => {
-  let words = await Words.find();
-  res.status(201).send(words);
-}
+const Selection = require('../models/selectionModel');
 
 const postWords = async (req, res) => {
-  let { firstWord, secondWord, username } = req.body;
-  let user = await User.findOne({
-    username
-  })
+  let { firstWord, secondWord, selection } = req.body;
+  let selectionId = await Selection.findOne({
+    title: selection
+  }, '_id')
   let words = new Words({
     firstWord,
     secondWord,
-    username:  user._id
+    selection:  selectionId._id
   })
-  console.log(`saving ${firstWord}&${secondWord} to the system`);
+  console.log(`saving ${firstWord}&${secondWord} to db`);
   let newWords = await words.save();
   res.status(201).send(newWords);
 }
 
-const getThePair = async (req, res) => {
-  res.send('get the pair')
+const deleteWords = async (req, res) => {
+  let { firstWord, secondWord } = req.body;
+  let wordsToDelete = await Words.findOneAndRemove({firstWord, secondWord});
+  res.status(200).send(`${wordsToDelete.firstWord} & ${wordsToDelete.secondWord} succesfully deleted`)
 }
 
-const getWordsByUserBot = async (req, res) => {
-  let { username } = req.body;
-  let user = await User.findOne({username});
+const getAllWordsBot = async (req, res) => {
+  let { title, size } = req.body;
+  let selectionId = await Selection.findOne({title}, '_id');
   let words = await Words.aggregate([
     {
       $match: {
-        username: user._id
+        selection: selectionId._id
       }
     },
     {
       $sample: {
-        size: 5
+        size
       }
     }
   ])
@@ -49,8 +47,7 @@ const getWordsByUserBot = async (req, res) => {
 }
 
 module.exports = {
-  getAllWords,
   postWords,
-  getThePair,
-  getWordsByUserBot
+  deleteWords,
+  getAllWordsBot
 }
