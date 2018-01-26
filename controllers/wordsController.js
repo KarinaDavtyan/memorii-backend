@@ -24,26 +24,30 @@ const deleteWords = async (req, res) => {
 }
 
 const getAllWordsBot = async (req, res) => {
-  let { title, size } = req.body;
+  let { title } = req.params;
   let selectionId = await Selection.findOne({title}, '_id');
-  let words = await Words.aggregate([
-    {
-      $match: {
-        selection: selectionId._id
+  let allWords = await Words.find({selection: selectionId._id});
+  if (allWords.length >= 20) {
+    let words = await Words.aggregate([
+      {
+        $match: {
+          selection: selectionId._id
+        }
+      },
+      {
+        $sample: 20
       }
-    },
-    {
-      $sample: {
-        size
+    ])
+    let twoWords = words.map((word) => {
+      return {
+        [word.firstWord]: word.secondWord
       }
-    }
-  ])
-  let twoWords = words.map((word) => {
-    return {
-      [word.firstWord]: word.secondWord
-    }
-  });
-  res.send(twoWords);
+    });
+    console.log('here');
+    res.send(twoWords);
+  } else {
+    res.send(allWords)
+  }
 }
 
 module.exports = {

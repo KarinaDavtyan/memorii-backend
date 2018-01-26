@@ -18,7 +18,7 @@ router.get('/selection/:title', selectionController.getSelection);
 router.post('/words', wordsController.postWords);
 router.delete('/words', wordsController.deleteWords);
 
-router.get('/all-words-bot', wordsController.getAllWordsBot);
+router.get('/all-words-bot/:title', wordsController.getAllWordsBot);
 
 
 module.exports = router;
