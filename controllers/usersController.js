@@ -67,9 +67,9 @@ const signIn = async (req, res) => {
 }
 
 const deleteUser = async (req, res) => {
-  let { username } = req.body;
-  let user = await User.findOneAndRemove({ username });
-  res.status(200).send(`${username} succesfully deleted from db`);
+  let { username } = req.user;
+  let userToDelete = await User.findOneAndRemove({ username });
+  res.status(200).send(`${userToDelete} succesfully deleted`);
 }
 
 module.exports = {

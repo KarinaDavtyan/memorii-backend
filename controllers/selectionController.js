@@ -37,8 +37,16 @@ const deleteSelection = async (req, res) => {
   res.status(200).send(`${selectionToDelete.title} succesfully deleted`)
 }
 
+const getSelection = async (req, res) => {
+  let { title } = req.params;
+  let selectionId = await Selection.findOne({ title }, '_id');
+  let words = await Words.find({ selection: selectionId._id});
+  res.status(200).send(words)
+}
+
 module.exports = {
   postSelection,
   getAllSelections,
-  deleteSelection
+  deleteSelection,
+  getSelection
 }
