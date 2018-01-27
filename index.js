@@ -25,7 +25,7 @@ const auth = async (req, res, next) => {
 require('./db');
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
-// app.use(bodyParser.json());
+app.use(bodyParser.json());
 
 app.use(jwtExpress({ secret: process.env.SECRET}).unless({path: ['/new-user', '/sign-in']}));
 
