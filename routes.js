@@ -10,9 +10,9 @@ router.post('/new-user', usersController.postUser);
 router.get('/sign-in', usersController.signIn);
 router.delete('/user', usersController.deleteUser);
 
-router.post('/selection', selectionController.postSelection);
-router.get('/get-all-selections', selectionController.getAllSelections);
-router.delete('/selection', selectionController.deleteSelection);
+router.post('/selection/:title', selectionController.postSelection);
+router.get('/all-selections', selectionController.getAllSelections);
+router.delete('/selection/:title', selectionController.deleteSelection);
 router.get('/selection/:title', selectionController.getSelection);
 
 router.post('/words', wordsController.postWords);
