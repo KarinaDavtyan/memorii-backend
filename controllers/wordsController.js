@@ -18,7 +18,7 @@ const postWords = async (req, res) => {
 }
 
 const deleteWords = async (req, res) => {
-  let { firstWord, secondWord } = req.body;
+  let { firstWord, secondWord } = req.params;
   let wordsToDelete = await Words.findOneAndRemove({firstWord, secondWord});
   res.status(200).send(`${wordsToDelete.firstWord} & ${wordsToDelete.secondWord} succesfully deleted`)
 }
