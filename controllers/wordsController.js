@@ -1,3 +1,4 @@
+const moment = require('moment');
 const Words = require('../models/wordsModel');
 const User = require('../models/usersModel');
 const Selection = require('../models/selectionModel');
@@ -10,6 +11,7 @@ const postWords = async (req, res) => {
   let words = new Words({
     firstWord,
     secondWord,
+    date: moment(),
     selection:  selectionId._id
   })
   console.log(`saving ${firstWord}&${secondWord} to db`);
@@ -20,7 +22,7 @@ const postWords = async (req, res) => {
 const deleteWords = async (req, res) => {
   let { firstWord, secondWord } = req.params;
   let wordsToDelete = await Words.findOneAndRemove({firstWord, secondWord});
-  res.status(200).send(`${wordsToDelete.firstWord} & ${wordsToDelete.secondWord} succesfully deleted`)
+  res.status(200).send(JSON.stringify({first: wordsToDelete.firstWord, second: wordsToDelete.secondWord}));
 }
 
 const getAllWordsBot = async (req, res) => {

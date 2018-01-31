@@ -1,3 +1,4 @@
+const moment = require('moment');
 const Words = require('../models/wordsModel');
 const User = require('../models/usersModel');
 const Selection = require('../models/selectionModel');
@@ -16,7 +17,8 @@ const postSelection = async (req, res) => {
   } else {
     let selectionNew = new Selection({
       title,
-      owner: userId
+      owner: userId,
+      date: moment()
     })
     let selectionSave = await selectionNew.save();
     console.log(`${title} saved to db`);
@@ -37,7 +39,7 @@ const getAllSelections = async (req, res) => {
 const deleteSelection = async (req, res) => {
   let { title } = req.params;
   let selectionToDelete = await Selection.findOneAndRemove({ title });
-  res.status(200).send(JSON.stringify(`${selectionToDelete.title} succesfully deleted`))
+  res.status(200).send(JSON.stringify(selectionToDelete.title))
 }
 
 const getSelection = async (req, res) => {
