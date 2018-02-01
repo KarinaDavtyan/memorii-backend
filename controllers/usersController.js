@@ -43,7 +43,7 @@ const signIn = async (req, res) => {
       let userToken = jwt.sign(
         { username: user.username },
         process.env.SECRET,
-        { expiresIn: '10h' }
+        { expiresIn: '12h' }
       );
       let  { avatar, points } = user
       res.status(200).send({token: userToken, user:{

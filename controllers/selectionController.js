@@ -32,8 +32,9 @@ const getAllSelections = async (req, res) => {
   if (selections.length > 0) {
     res.status(200).send(JSON.stringify(selections));
   } else {
-    res.status(404).send({error: 'no selections yet'})
+    res.sendStatus(404);
   }
+
 }
 
 const deleteSelection = async (req, res) => {
@@ -46,7 +47,11 @@ const getSelection = async (req, res) => {
   let { title } = req.params;
   let selectionId = await Selection.findOne({ title }, '_id');
   let words = await Words.find({ selection: selectionId._id});
-  res.status(200).send(JSON.stringify(words))
+  if (words) {
+    res.status(200).send(JSON.stringify(words))
+  } else {
+    res.sendStatus(404);
+  }
 }
 
 module.exports = {

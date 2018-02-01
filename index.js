@@ -14,8 +14,12 @@ const auth = async (req, res, next) => {
   if (authorization) {
     const [strategy, token] = authorization.split(' ');
     if (strategy !== 'Bearer') return await next();
-    const tokenData = jwt.verify(token, process.env.SECRET)
-    req.user = await User.findOne({username: tokenData.username})
+    try {
+      const tokenData = jwt.verify(token, process.env.SECRET);
+      req.user = await User.findOne({username: tokenData.username})
+    } catch (e) {
+      console.log(e);
+    }
     await next();
   } else {
     await next();

@@ -16,7 +16,7 @@ const postWords = async (req, res) => {
   })
   console.log(`saving ${firstWord}&${secondWord} to db`);
   let newWords = await words.save();
-  res.status(201).send(newWords);
+  res.status(201).send(JSON.stringify({first: newWords.firstWord, second: newWords.secondWord}));
 }
 
 const deleteWords = async (req, res) => {
