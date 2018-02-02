@@ -37,6 +37,21 @@ const getAllSelections = async (req, res) => {
 
 }
 
+const getAllSelectionsBot = async (req, res) => {
+  let username = req.body.username;
+  let userId = await User.findOne({
+    username
+  }, '_id');
+  let selections = await Selection.find({owner: userId}, 'title');
+  let selectionTitles = selections.map(selection => selection.title);
+  if (selectionTitles && selectionTitles.length > 0) {
+    res.status(200).send(JSON.stringify(selectionTitles));
+  } else {
+    console.log('error here');
+    res.sendStatus(404);
+  }
+}
+
 const deleteSelection = async (req, res) => {
   let { title } = req.params;
   let selectionToDelete = await Selection.findOneAndRemove({ title });
@@ -57,6 +72,7 @@ const getSelection = async (req, res) => {
 module.exports = {
   postSelection,
   getAllSelections,
+  getAllSelectionsBot,
   deleteSelection,
   getSelection
 }

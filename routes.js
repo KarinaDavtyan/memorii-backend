@@ -19,6 +19,7 @@ router.post('/words', wordsController.postWords);
 router.delete('/words/:firstWord/:secondWord', wordsController.deleteWords);
 
 router.get('/all-words-bot/:title', wordsController.getAllWordsBot);
+router.get('/selections-bot', selectionController.getAllSelectionsBot);
 
 
 module.exports = router;
