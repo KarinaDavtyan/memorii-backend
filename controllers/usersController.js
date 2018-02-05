@@ -72,8 +72,29 @@ const deleteUser = async (req, res) => {
   res.status(200).send(`${userToDelete} succesfully deleted`);
 }
 
+const getUserBot = async (req, res) => {
+  let { username } = req.body;
+  let user = await User.findOne({username});
+  if (user) {
+    console.log(user.username, 'found');
+    res.status(200).send(JSON.stringify(user.username));
+  } else {
+    console.log('not found');
+    res.sendStatus(404);
+  }
+}
+
+const postId = async (req, res) => {
+  const { telegramId, username } = req.body.data;
+  let updatedUser = await User.findOneAndUpdate({ username }, {$set:{telegramId: telegramId}});
+  await updatedUser.save();
+  res.sendStatus(200);
+}
+
 module.exports = {
   postUser,
   signIn,
-  deleteUser
+  deleteUser,
+  getUserBot,
+  postId
 }

@@ -38,9 +38,9 @@ const getAllSelections = async (req, res) => {
 }
 
 const getAllSelectionsBot = async (req, res) => {
-  let username = req.body.username;
+  let { telegramId } = req.body;
   let userId = await User.findOne({
-    username
+    telegramId
   }, '_id');
   let selections = await Selection.find({owner: userId}, 'title');
   let selectionTitles = selections.map(selection => selection.title);

@@ -31,7 +31,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-app.use(jwtExpress({ secret: process.env.SECRET}).unless({path: ['/new-user', '/sign-in', '/selections-bot']}));
+app.use(jwtExpress({ secret: process.env.SECRET}).unless({path: ['/new-user', '/sign-in', '/selections-bot', '/user-bot', '/id-bot']}));
 
 app.use(auth);
 app.use(router);
