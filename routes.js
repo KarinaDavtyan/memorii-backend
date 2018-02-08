@@ -18,7 +18,11 @@ router.get('/selection/:title', selectionController.getSelection);
 router.post('/words', wordsController.postWords);
 router.delete('/words/:firstWord/:secondWord', wordsController.deleteWords);
 
-router.get('/all-words-bot/:title', wordsController.getAllWordsBot);
+//unprotected routes for bot use exclusivelly
+router.get('/all-words-bot', wordsController.getAllWordsBot);
+router.get('/selections-bot', selectionController.getAllSelectionsBot);
+router.get('/user-bot', usersController.getUserBot);
+router.post('/id-bot', usersController.postId);
 
 
 module.exports = router;

@@ -26,10 +26,19 @@ const deleteWords = async (req, res) => {
 }
 
 const getAllWordsBot = async (req, res) => {
-  let { title } = req.params;
+  let { title } = req.body;
   let selectionId = await Selection.findOne({title}, '_id');
   let allWords = await Words.find({selection: selectionId._id});
-  if (allWords.length >= 20) {
+  if (allWords.length === 0) res.sendStatus(404);
+  let first = [], second = [];
+  if (allWords.length <= 20 && allWords.length !== 0) {
+    let twoWords = allWords.forEach((word) => {
+      first.push(word.firstWord);
+      second.push(word.secondWord);
+    });
+    res.send([first, second]);
+  } else if (allWords.length > 20) {
+    console.log(allWords, '>');
     let words = await Words.aggregate([
       {
         $match: {
@@ -40,15 +49,11 @@ const getAllWordsBot = async (req, res) => {
         $sample: 20
       }
     ])
-    let twoWords = words.map((word) => {
-      return {
-        [word.firstWord]: word.secondWord
-      }
+    let twoWords = allWords.forEach((word) => {
+      first.push(word.firstWord);
+      second.push(word.secondWord);
     });
-    console.log('here');
-    res.send(twoWords);
-  } else {
-    res.send(allWords)
+    res.send([first, second]);
   }
 }
 
