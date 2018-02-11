@@ -62,7 +62,7 @@ const getSelection = async (req, res) => {
   let { title } = req.params;
   let selectionId = await Selection.findOne({ title }, '_id');
   let words = await Words.find({ selection: selectionId._id});
-  if (words) {
+  if (words.length > 0) {
     res.status(200).send(JSON.stringify(words))
   } else {
     res.sendStatus(404);
