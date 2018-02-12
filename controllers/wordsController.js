@@ -27,8 +27,9 @@ const deleteWords = async (req, res) => {
 
 const getAllWordsBot = async (req, res) => {
   let { title } = req.body;
-  let selectionId = await Selection.findOne({title}, '_id');
-  let allWords = await Words.find({selection: selectionId._id});
+  let selection = await Selection.findOne({title});
+  let user = await User.findOne({_id: selection.owner})
+  let allWords = await Words.find({selection: selection._id});
   if (allWords.length === 0) res.sendStatus(404);
   let first = [], second = [];
   if (allWords.length <= 20 && allWords.length !== 0) {
@@ -36,13 +37,13 @@ const getAllWordsBot = async (req, res) => {
       first.push(word.firstWord);
       second.push(word.secondWord);
     });
-    res.send([first, second]);
+    res.send([first, second, user.telegramId]);
   } else if (allWords.length > 20) {
     console.log(allWords, '>');
     let words = await Words.aggregate([
       {
         $match: {
-          selection: selectionId._id
+          selection: selection._id
         }
       },
       {
@@ -53,7 +54,7 @@ const getAllWordsBot = async (req, res) => {
       first.push(word.firstWord);
       second.push(word.secondWord);
     });
-    res.send([first, second]);
+    res.send([first, second, user.telegramId]);
   }
 }
 
