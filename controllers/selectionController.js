@@ -4,7 +4,7 @@ const User = require('../models/usersModel');
 const Selection = require('../models/selectionModel');
 
 const postSelection = async (req, res) => {
-  let { title } = req.params;
+  let { title } = req.body;
   let userId = req.user._id;
   let selection = await Selection.findOne({
     title
@@ -53,7 +53,7 @@ const getAllSelectionsBot = async (req, res) => {
 }
 
 const deleteSelection = async (req, res) => {
-  let { title } = req.params;
+  let { title } = req.body;
   let selectionToDelete = await Selection.findOneAndRemove({ title });
   res.status(200).send(JSON.stringify(selectionToDelete.title))
 }

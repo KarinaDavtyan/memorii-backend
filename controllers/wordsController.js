@@ -20,7 +20,7 @@ const postWords = async (req, res) => {
 }
 
 const deleteWords = async (req, res) => {
-  let { firstWord, secondWord } = req.params;
+  let { firstWord, secondWord } = req.body;
   let wordsToDelete = await Words.findOneAndRemove({firstWord, secondWord});
   res.status(200).send(JSON.stringify({first: wordsToDelete.firstWord, second: wordsToDelete.secondWord}));
 }

@@ -10,13 +10,13 @@ router.post('/new-user', usersController.postUser);
 router.get('/sign-in', usersController.signIn);
 router.delete('/user', usersController.deleteUser);
 
-router.post('/selection/:title', selectionController.postSelection);
 router.get('/all-selections', selectionController.getAllSelections);
-router.delete('/selection/:title', selectionController.deleteSelection);
+router.post('/selection', selectionController.postSelection);
+router.delete('/selection', selectionController.deleteSelection);
 router.get('/selection/:title', selectionController.getSelection);
 
 router.post('/words', wordsController.postWords);
-router.delete('/words/:firstWord/:secondWord', wordsController.deleteWords);
+router.delete('/words', wordsController.deleteWords);
 
 //unprotected routes for bot use exclusivelly
 router.get('/all-words-bot', wordsController.getAllWordsBot);
