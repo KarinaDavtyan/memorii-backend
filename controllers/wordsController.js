@@ -16,13 +16,13 @@ const postWords = async (req, res) => {
   })
   console.log(`saving ${firstWord}&${secondWord} to db`);
   let newWords = await words.save();
-  res.status(201).send(JSON.stringify({first: newWords.firstWord, second: newWords.secondWord}));
+  res.status(201).send(JSON.stringify(newWords));
 }
 
 const deleteWords = async (req, res) => {
   let { firstWord, secondWord } = req.body;
   let wordsToDelete = await Words.findOneAndRemove({firstWord, secondWord});
-  res.status(200).send(JSON.stringify({first: wordsToDelete.firstWord, second: wordsToDelete.secondWord}));
+  res.status(200).send(JSON.stringify(wordsToDelete));
 }
 
 const getAllWordsBot = async (req, res) => {

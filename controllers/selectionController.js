@@ -22,7 +22,7 @@ const postSelection = async (req, res) => {
     })
     let selectionSave = await selectionNew.save();
     console.log(`${title} saved to db`);
-    res.status(201).send(JSON.stringify(selectionSave.title));
+    res.status(201).send(JSON.stringify(selectionSave));
   }
 }
 
@@ -55,7 +55,7 @@ const getAllSelectionsBot = async (req, res) => {
 const deleteSelection = async (req, res) => {
   let { title } = req.body;
   let selectionToDelete = await Selection.findOneAndRemove({ title });
-  res.status(200).send(JSON.stringify(selectionToDelete.title))
+  res.status(200).send(JSON.stringify(selectionToDelete))
 }
 
 const getSelection = async (req, res) => {
