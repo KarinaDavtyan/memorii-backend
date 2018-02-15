@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const wordsSchema = mongoose.Schema({
   firstWord: String,
   secondWord: String,
-  username: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+  selection: { type: mongoose.Schema.Types.ObjectId, ref: 'Selection' },
+  date: { type: Date, default: Date.now() }
 })
 
 const Words = mongoose.model('Words', wordsSchema);

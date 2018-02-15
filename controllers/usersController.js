@@ -3,22 +3,27 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../models/usersModel');
 
-const createUser = async (req, res) => {
-  let { username, password } = req.body;
+const postUser = async (req, res) => {
+  let { username,
+    password,
+    points,
+    avatar } = req.body;
   let user = await User.findOne({
     username
   })
   if (user) {
-    res.status(400).send({error: 'Username already exists'});
+    res.status(400).send({error: `${username} username has been taken already`});
   } else {
     const saltRounds = 10;
     let hashedPassword = await bcrypt.hash(password, saltRounds);
     const user = new User({
       username,
-      password: hashedPassword
+      password: hashedPassword,
+      points,
+      avatar
     })
-    console.log(`saving ${username} to the system`);
     let newUser = await user.save();
+    console.log(`${username} saved to db`);
     res.status(201).send(user);
   }
 }
@@ -38,9 +43,15 @@ const signIn = async (req, res) => {
       let userToken = jwt.sign(
         { username: user.username },
         process.env.SECRET,
-        { expiresIn: '1h' }
+        { expiresIn: '12h' }
       );
-      res.status(201).send({token: userToken, username});
+      let  { avatar, points } = user
+      res.status(200).send({token: userToken, user:{
+        username,
+        points,
+        avatar
+      }
+      });
       return;
     } else {
       res.status(400).send(JSON.stringify({message: 'Wrong credentials'}));
@@ -55,20 +66,35 @@ const signIn = async (req, res) => {
   }
 }
 
-const getUser = async (req, res) => {
-  let  { username } = req.body;
+const deleteUser = async (req, res) => {
+  let { username } = req.user;
+  let userToDelete = await User.findOneAndRemove({ username });
+  res.status(200).send(`${userToDelete} succesfully deleted`);
+}
+
+const getUserBot = async (req, res) => {
+  let { username } = req.body;
   let user = await User.findOne({username});
   if (user) {
-    res.status(201).send({username});
+    console.log(user.username, 'found');
+    res.status(200).send(JSON.stringify(user.username));
   } else {
-    res.status(401).send(JSON.stringify({
-      message: 'Wrongcredentials'
-    }));
+    console.log('not found');
+    res.sendStatus(404);
   }
 }
 
+const postId = async (req, res) => {
+  const { telegramId, username } = req.body.data;
+  let updatedUser = await User.findOneAndUpdate({ username }, {$set:{telegramId: telegramId}});
+  await updatedUser.save();
+  res.sendStatus(200);
+}
+
 module.exports = {
-  createUser,
+  postUser,
   signIn,
-  getUser
+  deleteUser,
+  getUserBot,
+  postId
 }
