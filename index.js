@@ -9,6 +9,8 @@ const bodyParser = require('body-parser');
 const router = require('./routes.js');
 const User = require('./models/usersModel');
 
+const port = process.env.PORT || 3000;
+
 const auth = async (req, res, next) => {
   const { authorization } = req.headers;
   if (authorization) {
@@ -37,4 +39,4 @@ app.use(auth);
 app.use(router);
 
 
-app.listen(3000, () => console.log('plastic-tortilla server listens on port 3000'));
+app.listen(port, () => console.log(`plastic-tortilla server listens on port ${port}`));
