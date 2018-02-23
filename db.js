@@ -4,11 +4,8 @@ mongoose.Promise = global.Promise;
 
 const db = mongoose.connection;
 
-let localDB = 'mongodb://localhost/plasticTortillaDB'
-process.env.MONGOLAB_URI
-  ? mongoose.connect(process.env.MONGOLAB_URI)
-  : mongoose.connect(localDB)
+let mongoDB = process.env.MONGOLAB_URI || 'mongodb://localhost/plasticTortillaDB'
+mongoose.connect(mongoDB)
 
-console.log(process.env.MONGOLAB_URI);
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', () => console.log('we are connected to plasticTortilla-db'));
+db.once('open', () => console.log(`we are connected to ${localDB}`));
