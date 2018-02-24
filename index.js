@@ -11,6 +11,7 @@ const User = require('./models/usersModel');
 
 const port = process.env.PORT || 3000;
 
+
 const auth = async (req, res, next) => {
   const { authorization } = req.headers;
   if (authorization) {
@@ -46,4 +47,4 @@ app.use(auth);
 app.use(router);
 
 
-app.listen(port, () => console.log(`plastic-tortilla server listens on port ${port}`));
+app.listen(port, () => console.log(`memorii server listens on port ${port}`));

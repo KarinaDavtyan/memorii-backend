@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-
 const db = mongoose.connection;
 
-let mongoDB = process.env.MONGOLAB_URI;
+let mongoDB = process.env.MONGOLAB_MEMORII || 'mongodb://localhost/plasticTortillaDB'
 mongoose.connect(mongoDB)
 
 db.on('error', console.error.bind(console, 'connection error:'));
