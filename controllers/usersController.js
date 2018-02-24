@@ -12,7 +12,7 @@ const postUser = async (req, res) => {
     username
   })
   if (user) {
-    res.status(400).send({error: `${username} username has been taken already`});
+    res.sendStatus(400);
   } else {
     const saltRounds = 10;
     let hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -23,9 +23,21 @@ const postUser = async (req, res) => {
       avatar
     })
     let newUser = await user.save();
-    console.log(`${username} saved to db`);
     res.status(201).send(user);
   }
+}
+
+const checkUsername = async (req, res) => {
+  let { username } = req.params;
+  let user = await User.findOne({
+    username
+  })
+  if (user) {
+    res.status(201).send(user);
+  } else {
+    res.sendStatus(400);
+  }
+
 }
 
 const signIn = async (req, res) => {
@@ -93,6 +105,7 @@ const postId = async (req, res) => {
 
 module.exports = {
   postUser,
+  checkUsername,
   signIn,
   deleteUser,
   getUserBot,

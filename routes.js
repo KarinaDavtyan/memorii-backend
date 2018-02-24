@@ -8,6 +8,7 @@ const selectionController = require('./controllers/selectionController');
 
 router.post('/new-user', usersController.postUser);
 router.get('/sign-in', usersController.signIn);
+router.get('/check/:username', usersController.checkUsername);
 router.delete('/user', usersController.deleteUser);
 
 router.get('/all-selections', selectionController.getAllSelections);
