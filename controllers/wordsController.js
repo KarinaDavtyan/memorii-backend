@@ -5,15 +5,17 @@ const Selection = require('../models/selectionModel');
 
 const postWords = async (req, res) => {
   let { firstWord, secondWord, selection } = req.body;
-  let selectionId = await Selection.findOne({
+  let selectionDB = await Selection.findOne({
     title: selection
-  }, '_id')
+  })
   let words = new Words({
     firstWord,
     secondWord,
     date: moment(),
-    selection:  selectionId._id
+    selection:  selectionDB._id
   })
+  selectionDB.wordsList.push(words._id);
+  await selectionDB.save();
   console.log(`saving ${firstWord}&${secondWord} to db`);
   let newWords = await words.save();
   res.status(201).send(JSON.stringify(newWords));

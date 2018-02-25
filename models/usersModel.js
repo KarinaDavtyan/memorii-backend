@@ -5,7 +5,8 @@ const userSchema = mongoose.Schema({
   password: String,
   points: { type: Number, default: 0 },
   avatar: { type: String, default: '' },
-  telegramId: { type: String, default: '' }
+  telegramId: { type: String, default: '' },
+  selections: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Words' }]
 })
 
 const User = mongoose.model('User', userSchema);
