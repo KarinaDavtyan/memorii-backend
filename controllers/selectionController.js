@@ -20,6 +20,8 @@ const postSelection = async (req, res) => {
       owner: userId,
       date: moment()
     })
+    user.selections.push(selectionNew._id);
+    await user.save();
     let selectionSave = await selectionNew.save();
     console.log(`${title} saved to db`);
     res.status(201).send(JSON.stringify(selectionSave));
@@ -55,6 +57,7 @@ const getAllSelectionsBot = async (req, res) => {
 const deleteSelection = async (req, res) => {
   let { title } = req.body;
   let selectionToDelete = await Selection.findOneAndRemove({ title });
+  await Words.remove({_id: {$in: selectionToDelete.wordsList}});
   res.status(200).send(JSON.stringify(selectionToDelete))
 }
 
