@@ -57,7 +57,7 @@ const getAllSelectionsBot = async (req, res) => {
 const deleteSelection = async (req, res) => {
   let { title } = req.body;
   let selectionToDelete = await Selection.findOneAndRemove({ title });
-  let words = await Words.findOneAndRemove({ selection: selectionToDelete._id});
+  await Words.remove({_id: {$in: selectionToDelete.wordsList}});
   res.status(200).send(JSON.stringify(selectionToDelete))
 }
 
