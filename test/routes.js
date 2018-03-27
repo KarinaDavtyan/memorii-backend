@@ -10,7 +10,7 @@ const app = require('../index.js');
 
 describe('Routes', () => {
 
-  before((done) => {
+  before('connectDB', (done) => {
     const db = mongoose.connection;
     const mongoDB = 'mongodb://localhost/test-memorii';
     mongoose.connect(mongoDB);
@@ -21,7 +21,7 @@ describe('Routes', () => {
     });
   })
 
-  after((done) => {
+  after('dropDB 🔥🔥🔥', (done) => {
     mongoose.connection.db.dropDatabase((err, res) => {
       if (err) throw err;
       // eslint-disable-next-line no-console
@@ -30,7 +30,7 @@ describe('Routes', () => {
     });
   });
 
-  describe('unauthorised', () => {
+  describe('Access routes without proper authorization', () => {
 
     it('/all-selections throws 401 if unauthorised', (done) => {
       chai.request(app)
