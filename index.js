@@ -57,5 +57,6 @@ app.use(auth);
 
 app.use(router);
 
-
 app.listen(port, () => console.log(`memorii server listens on port ${port}`));
+
+module.exports = app;

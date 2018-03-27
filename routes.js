@@ -5,7 +5,6 @@ const usersController = require('./controllers/usersController');
 const wordsController = require('./controllers/wordsController');
 const selectionController = require('./controllers/selectionController');
 
-
 router.post('/new-user', usersController.postUser);
 router.get('/sign-in', usersController.signIn);
 router.get('/check/:username', usersController.checkUsername);
